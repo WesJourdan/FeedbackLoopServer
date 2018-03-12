@@ -10,7 +10,9 @@ passport.serializeUser((user, done) => {
 })
 
 passport.deserializeUser((id, done) => {
-	done(null, id)
+	User.findById(id, (err, user) => {
+		done(null, user)
+	})
 })
 
 passport.use(
@@ -24,11 +26,9 @@ passport.use(
 		(accessToken, refreshToken, profile, done) => {
 			User.findOne({ googleId: profile.id }).then(existingUser => {
 				if (existingUser) {
-					console.log('user already exists')
 					// we already have a record with the given profile ID
 					done(null, existingUser)
 				} else {
-					console.log('creating new user')
 					// we don't have a user record with this ID, make a new record!
 					new User({ googleId: profile.id })
 						.save()
