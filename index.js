@@ -5,6 +5,7 @@ const cookieSession = require('cookie-session')
 const passport = require('passport')
 const keys = require('./config/keys')
 require('./models/User')
+require('./models/Survey')
 require('./services/passport')
 
 
@@ -25,6 +26,7 @@ app.use(passport.session())
 
 require('./routes/authRoutes')(app)
 require('./routes/billingRoutes')(app)
+require('./routes/surveyRoutes')(app)
 
 if (process.env.NODE_ENV === 'production') {
 	// Express will serve up production assets
@@ -41,3 +43,4 @@ if (process.env.NODE_ENV === 'production') {
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT)
+console.log('node is listening on port', PORT)
